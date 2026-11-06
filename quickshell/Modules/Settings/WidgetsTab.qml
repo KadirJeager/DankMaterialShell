@@ -108,7 +108,7 @@ Item {
 
     property var baseWidgetDefinitions: {
         pluginCatalogRevision;
-        var coreWidgets = BarWidgetCatalog.widgets.map(widget => Object.assign({
+        var coreWidgets = BarWidgetCatalog.widgets.filter(widget => !widget.dockOnly).map(widget => Object.assign({
                 "enabled": true
             }, widget, widgetsTab.widgetAvailability[widget.id] ?? {}));
 

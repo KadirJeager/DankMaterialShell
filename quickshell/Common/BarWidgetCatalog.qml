@@ -186,6 +186,14 @@ Singleton {
             "section": "right"
         },
         {
+            "id": "flexibleSpacer",
+            "text": I18n.tr("Flexible spacer", "dock widget name, empty space that grows to fill the dock"),
+            "description": I18n.tr("Fills the free space of a taskbar dock"),
+            "icon": "space_bar",
+            "section": "right",
+            "dockOnly": true
+        },
+        {
             "id": "separator",
             "text": I18n.tr("Separator", "bar widget name, visual divider between widgets"),
             "description": I18n.tr("Visual divider between widgets"),

@@ -188,7 +188,8 @@ FocusScope {
         return sizes;
     }
     readonly property var flexible: model.map(item => item.widgetId === "flexibleSpacer" && item.enabled !== false)
-    readonly property var participating: sizes.map((size, index) => size > 0 || flexible[index])
+    // Outside a filling dock a flexible spacer has no room to claim, so it must not cost a gap either.
+    readonly property var participating: sizes.map((size, index) => size > 0 || (flexible[index] && fillAvailable))
     readonly property real gapSpace: Math.max(0, participating.filter(Boolean).length - 1) * spacing
     readonly property var allocatedSizes: DockConfig.allocation(sizes, flexible, fillAvailable ? Math.max(0, availableSize - gapSpace) : 0, 0)
     // Scales depend only on the pointer in the rest frame (strip origin latched before the dock grows)
@@ -326,7 +327,8 @@ FocusScope {
                 required property var modelData
                 readonly property var widgetItem: appLoader.item ?? loader.item
                 readonly property bool flexible: modelData.widgetId === "flexibleSpacer"
-                readonly property real naturalSize: modelData.enabled === false || flexible ? 0 : root.vertical ? (widgetItem?.implicitHeight || widgetItem?.height || 0) : (widgetItem?.implicitWidth || widgetItem?.width || 0)
+                // In edit mode a flexible spacer keeps one slot so it can be seen, dragged and removed.
+                readonly property real naturalSize: modelData.enabled === false ? 0 : flexible ? (root.surfaceContext.editMode ? root.baseSlotSize : 0) : root.vertical ? (widgetItem?.implicitHeight || widgetItem?.height || 0) : (widgetItem?.implicitWidth || widgetItem?.width || 0)
                 readonly property bool dragging: root.draggingIndex === index
                 readonly property string unitId: DockConfig.unitOf(modelData)
                 readonly property bool unitDragging: root.draggingUnit === unitId

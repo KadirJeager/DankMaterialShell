@@ -218,12 +218,13 @@ function move(items, from, to) {
     return result;
 }
 
+// A flexible slot's size is its minimum; the free space is shared on top of it.
 function allocation(sizes, flexible, available, spacing) {
-    const fixed = sizes.reduce((sum, size, i) => sum + (flexible[i] ? 0 : Math.max(0, size)), 0);
+    const fixed = sizes.reduce((sum, size) => sum + Math.max(0, size), 0);
     const gaps = Math.max(0, sizes.length - 1) * spacing;
     const count = flexible.filter(Boolean).length;
     const share = count ? Math.max(0, available - fixed - gaps) / count : 0;
-    return sizes.map((size, i) => flexible[i] ? share : Math.max(0, size));
+    return sizes.map((size, i) => Math.max(0, size) + (flexible[i] ? share : 0));
 }
 
 var APP_SLOT_TYPES = {

@@ -115,3 +115,15 @@ test("settings reorder follows the saved dock order and pins travel with the wid
         assert.deepEqual(plain(config.widgetOrder(result.widgets, result.order)), result.widgets.map(widget => widget.id));
     }
 });
+
+test("flexible slots keep their minimum and share only the space left after it", () => {
+    const cases = [
+        [[40, 0, 40], [false, true, false], 200, [40, 120, 40]],
+        [[40, 0, 40, 0], [false, true, false, true], 200, [40, 60, 40, 60]],
+        [[40, 42, 40], [false, true, false], 100, [40, 42, 40]],
+        [[40, 42, 40, 42], [false, true, false, true], 200, [40, 60, 40, 60]],
+        [[40, 0, 40], [false, true, false], 0, [40, 0, 40]]
+    ];
+    for (const [sizes, flexible, available, expected] of cases)
+        assert.deepEqual(plain(config.allocation(sizes, flexible, available, 0)), expected);
+});

@@ -168,11 +168,12 @@ Item {
                     reorderList: widgetList
                     readonly property string slotOption: root.slotOptions[modelData.widgetId] ?? ""
                     readonly property bool shown: slotOption ? dock.config[slotOption] === true : modelData.enabled !== false
+                    readonly property bool idleFlexible: widgetRow.modelData.widgetId === "flexibleSpacer" && dock.config?.mode !== "taskbar"
 
                     title: root.widgetName(modelData.widgetId)
                     iconName: root.widgetIcon(modelData.widgetId)
-                    subtitle: removeButton.confirming ? I18n.tr("Confirm Delete") : ""
-                    subtitleColor: Theme.error
+                    subtitle: removeButton.confirming ? I18n.tr("Confirm Delete") : widgetRow.idleFlexible ? I18n.tr("Takes space only in taskbar mode") : ""
+                    subtitleColor: removeButton.confirming ? Theme.error : widgetRow.supportingContentColor
                     body: SettingsSliderRow {
                         width: parent.width
                         visible: widgetRow.modelData.widgetId === "spacer"

@@ -147,6 +147,8 @@ Singleton {
     function _barWidgetSearchEntries() {
         const entries = [];
         for (const widget of BarWidgetCatalog.widgets) {
+            if (widget.dockOnly)
+                continue;
             const present = presentBarWidgets[widget.id] === true;
             entries.push({
                 section: "",
