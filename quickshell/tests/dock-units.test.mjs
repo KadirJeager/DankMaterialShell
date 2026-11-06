@@ -127,3 +127,11 @@ test("flexible slots keep their minimum and share only the space left after it",
     for (const [sizes, flexible, available, expected] of cases)
         assert.deepEqual(plain(config.allocation(sizes, flexible, available, 0)), expected);
 });
+
+test("an enabled flexible spacer stretches a compact dock across its edge", () => {
+    const spacer = enabled => ({ id: "flex", widgetId: "flexibleSpacer", enabled });
+    assert.equal(config.fillsEdge({ mode: "compact", widgets: [{ id: "clock", widgetId: "clock" }] }), false);
+    assert.equal(config.fillsEdge({ mode: "compact", widgets: [spacer(true)] }), true);
+    assert.equal(config.fillsEdge({ mode: "compact", widgets: [spacer(false)] }), false);
+    assert.equal(config.fillsEdge({ mode: "taskbar", widgets: [] }), true);
+});

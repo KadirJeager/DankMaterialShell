@@ -218,6 +218,11 @@ function move(items, from, to) {
     return result;
 }
 
+// A flexible spacer only has room to fill when the dock spans its edge, so adding one stretches a compact dock too.
+function fillsEdge(config) {
+    return config?.mode === "taskbar" || (config?.widgets ?? []).some(widget => widget.widgetId === "flexibleSpacer" && widget.enabled !== false);
+}
+
 // A flexible slot's size is its minimum; the free space is shared on top of it.
 function allocation(sizes, flexible, available, spacing) {
     const fixed = sizes.reduce((sum, size) => sum + Math.max(0, size), 0);

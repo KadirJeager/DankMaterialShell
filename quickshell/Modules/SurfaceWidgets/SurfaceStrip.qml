@@ -188,8 +188,7 @@ FocusScope {
         return sizes;
     }
     readonly property var flexible: model.map(item => item.widgetId === "flexibleSpacer" && item.enabled !== false)
-    // Outside a filling dock a flexible spacer has no room to claim, so it must not cost a gap either.
-    readonly property var participating: sizes.map((size, index) => size > 0 || (flexible[index] && fillAvailable))
+    readonly property var participating: sizes.map((size, index) => size > 0 || flexible[index])
     readonly property real gapSpace: Math.max(0, participating.filter(Boolean).length - 1) * spacing
     readonly property var allocatedSizes: DockConfig.allocation(sizes, flexible, fillAvailable ? Math.max(0, availableSize - gapSpace) : 0, 0)
     // Scales depend only on the pointer in the rest frame (strip origin latched before the dock grows)
